@@ -1,0 +1,21 @@
+# create-app-job:
+#   stage: build
+#   tags:
+#     - mendix-deploy
+#   script:
+#     - echo "Hello, $GITLAB_USER_LOGIN!"
+#     - echo "Triggering app1 creation"
+#     - |
+#         curl -X POST http://app1-pipeline-mendix-ops.apps.ictocp.localhost.local -H 'Content-Type: application/json' -H 'Event: create-app' -d '{ "namespace":"mendix-dev", "env-internal-name":"app1", "dtap-mode":"D", "storage-plan-name":"app1-storage", "mx-admin-password":"P@ssw0rd", "database-plan-name":"app1-db" }'
+
+deploy-prod:
+  stage: deploy
+  tags:
+    - mendix-deploy
+  script:
+    - echo "Hello, $GITLAB_USER_LOGIN!"
+    - echo "Triggering app1 creation"
+    - |
+        curl -X POST http://app1-pipeline-mendix-ops.apps.ictocp.localhost.local -H 'Content-Type: application/json' -H 'Event: build' -d '{"repo": {"url":"http://10.50.11.239/ictdev/mendix-app1.git","revision":"main"},"namespace":"mendix-dev","env-internal-name":"app1","constants-mode":"auto","scheduled-events-mode":"auto"}'
+    - echo "🍏 This job's status is ${{ job.status }}."
+  environment: production
